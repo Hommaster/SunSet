@@ -1,5 +1,6 @@
 package com.example.sunset
 
+import android.animation.AnimatorSet
 import android.animation.ArgbEvaluator
 import android.animation.ObjectAnimator
 import android.os.Bundle
@@ -51,8 +52,15 @@ class MainActivity : AppCompatActivity() {
             .setDuration(3000)
         sunsetSkyAnimator.setEvaluator(ArgbEvaluator())
 
-        sunsetSkyAnimator.start()
+        val nightSkyAnimator = ObjectAnimator
+            .ofInt(binding.sky, "backgroundColor", sunsetSkyColor, nightSkyColor)
+            .setDuration(3000)
+        nightSkyAnimator.setEvaluator(ArgbEvaluator())
 
-        heightAnimator.start()
+        val animatorSet = AnimatorSet()
+        animatorSet.play(heightAnimator)
+            .after(sunsetSkyAnimator)
+            .before(nightSkyAnimator)
+        animatorSet.start()
     }
 }
